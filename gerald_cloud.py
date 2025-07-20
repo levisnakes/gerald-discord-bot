@@ -39,36 +39,148 @@ class GeraldBot(commands.Bot):
         self.word_frequency = {}
         self.load_learned_words()
         
-        # Conversation history for context
-        self.conversation_history = {}
+        # Persistent conversation memory - remembers everything
+        self.all_conversations = []
+        self.conversation_topics = {}
+        self.user_personalities = {}
+        self.load_conversations()
         
         # Last response time to prevent spam
         self.last_response_time = {}
-        self.cooldown_seconds = 3  # Wait 3 seconds between responses
+        self.cooldown_seconds = 3
+        
+        # Random rant system
+        self.last_rant_time = 0
+        self.rant_cooldown = 300  # 5 minutes between rants
         
         # Load configuration
         self.load_config()
     
     def load_config(self):
         """Load bot configuration."""
-        # Default configuration
+        # Default configuration - friend group personality
         self.config = {
-            "response_chance": 0.3,  # Respond to 30% of messages
-            "max_history": 10,
-            "trigger_words": ["hey", "hello", "gerald", "what do you think"],
+            "response_chance": 0.4,  # More active in conversations
+            "max_history": 50,  # Remember more messages
+            "trigger_words": ["hey", "hello", "gerald", "what do you think", "games", "gaming", "play"],
+            "friend_names": ["tyler", "jackson", "mate", "guys", "lads"],  # Friend group members
+            "topics": ["gaming", "food", "weight", "tired", "boring", "mental", "rubbish"],
         }
+    
+    def load_conversations(self):
+        """Load all conversation history from file."""
+        try:
+            with open('gerald_memory.json', 'r') as f:
+                memory_data = json.load(f)
+                self.all_conversations = memory_data.get('conversations', [])
+                self.conversation_topics = memory_data.get('topics', {})
+                self.user_personalities = memory_data.get('users', {})
+                print(f"Gerald remembers {len(self.all_conversations)} conversations")
+        except FileNotFoundError:
+            self.all_conversations = []
+            self.conversation_topics = {}
+            self.user_personalities = {}
+            print("Gerald starting with fresh memory")
+    
+    def save_conversations(self):
+        """Save all conversations to persistent storage."""
+        memory_data = {
+            'conversations': self.all_conversations[-1000:],  # Keep last 1000 messages
+            'topics': self.conversation_topics,
+            'users': self.user_personalities,
+            'last_updated': datetime.now().isoformat()
+        }
+        try:
+            with open('gerald_memory.json', 'w') as f:
+                json.dump(memory_data, f, indent=2)
+        except Exception as e:
+            print(f"Failed to save memory: {e}")
+    
+    def remember_message(self, message):
+        """Store message in permanent memory."""
+        memory_entry = {
+            'author': message.author.name,
+            'content': message.content,
+            'channel': message.channel.name if hasattr(message.channel, 'name') else 'DM',
+            'timestamp': datetime.now().isoformat(),
+            'mentions': [m.name for m in message.mentions if m != self.user]
+        }
+        
+        self.all_conversations.append(memory_entry)
+        
+        # Learn about user personality
+        author_name = message.author.name.lower()
+        if author_name not in self.user_personalities:
+            self.user_personalities[author_name] = {
+                'common_words': {},
+                'topics': [],
+                'message_count': 0
+            }
+        
+        self.user_personalities[author_name]['message_count'] += 1
+        
+        # Save every 10 messages to avoid data loss
+        if len(self.all_conversations) % 10 == 0:
+            self.save_conversations()
+    
+    def get_random_rant_topic(self):
+        """Generate a random rant about something from memory."""
+        topics = [
+            "tyler being massive",
+            "games being rubbish these days", 
+            "everyone always eating",
+            "people moaning about being tired",
+            "proper mental weather innit",
+            "cant be arsed with anything today",
+            "why everything so expensive now",
+            "gaming all night then moaning",
+            "tyler probably eating again",
+            "bloody hell this is boring"
+        ]
+        
+        # Use learned words to make it more authentic
+        if 'gaming' in self.learned_words and 'rubbish' in self.learned_words:
+            topics.append("gaming is proper rubbish mate")
+        if 'tyler' in self.learned_words and 'massive' in self.learned_words:
+            topics.append("tyler is getting more massive")
+            
+        return random.choice(topics)
     
     def load_learned_words(self):
         """Load words that Gerald has learned from conversations."""
-        # Start with basic British words
-        self.learned_words = {
-            'mate', 'innit', 'bloody', 'hell', 'proper', 'mental', 'rubbish',
-            'cant', 'be', 'arsed', 'whatever', 'dont', 'care', 'you', 'lot',
-            'tyler', 'massive', 'heavy', 'pounds', 'weight', 'fat', 'huge',
-            'what', 'how', 'why', 'when', 'where', 'good', 'bad', 'nice'
-        }
-        self.word_frequency = {}
+        try:
+            with open('gerald_vocabulary.json', 'r') as f:
+                vocab_data = json.load(f)
+                self.learned_words = set(vocab_data.get('words', []))
+                self.word_frequency = vocab_data.get('frequency', {})
+        except FileNotFoundError:
+            # Start with friend group vocabulary
+            self.learned_words = {
+                # British basics
+                'mate', 'innit', 'bloody', 'hell', 'proper', 'mental', 'rubbish',
+                'cant', 'be', 'arsed', 'whatever', 'dont', 'care', 'you', 'lot',
+                # Friend group stuff
+                'tyler', 'jackson', 'massive', 'heavy', 'pounds', 'weight', 'fat', 'huge',
+                'gaming', 'games', 'play', 'playing', 'tired', 'boring', 'food', 'eating',
+                'what', 'how', 'why', 'when', 'where', 'good', 'bad', 'nice', 'lads', 'guys',
+                # Gaming vocabulary  
+                'lag', 'fps', 'noob', 'epic', 'gg', 'rip', 'op', 'sus', 'cringe'
+            }
+            self.word_frequency = {}
         print(f"Gerald starts with {len(self.learned_words)} words")
+    
+    def save_learned_words(self):
+        """Save Gerald's vocabulary to file."""
+        vocab_data = {
+            'words': list(self.learned_words),
+            'frequency': self.word_frequency,
+            'last_updated': datetime.now().isoformat()
+        }
+        try:
+            with open('gerald_vocabulary.json', 'w') as f:
+                json.dump(vocab_data, f, indent=2)
+        except Exception as e:
+            print(f"Failed to save vocabulary: {e}")
     
     def learn_from_message(self, message_content):
         """Learn new words from a user message."""
@@ -87,6 +199,7 @@ class GeraldBot(commands.Bot):
         
         if new_words_learned > 0:
             print(f"Gerald learned {new_words_learned} new words from: {words}")
+            self.save_learned_words()  # Save immediately
     
     def generate_response(self, context=""):
         """Generate a response using only learned words."""
@@ -159,6 +272,9 @@ class GeraldBot(commands.Bot):
         # Process commands first
         await self.process_commands(message)
         
+        # Remember EVERY message permanently
+        self.remember_message(message)
+        
         # Learn from the user's message
         self.learn_from_message(message.content)
         
@@ -187,9 +303,25 @@ class GeraldBot(commands.Bot):
             if trigger.lower() in content_lower:
                 return True
         
+        # Respond to friend names being mentioned
+        for friend in self.config["friend_names"]:
+            if friend in content_lower:
+                return random.random() < 0.6  # 60% chance
+        
+        # Random rants (every 5+ minutes)
+        if current_time - self.last_rant_time > self.rant_cooldown:
+            if random.random() < 0.1:  # 10% chance for random rant
+                self.last_rant_time = current_time
+                return True
+        
         # Respond to questions more often
         if '?' in message.content and len(message.content) > 5:
             return random.random() < 0.8
+        
+        # Gaming talk gets more responses
+        gaming_words = ['game', 'gaming', 'play', 'fps', 'lag', 'gg']
+        if any(word in content_lower for word in gaming_words):
+            return random.random() < 0.7
         
         # Random response chance for any message
         return random.random() < self.config["response_chance"]
@@ -197,7 +329,13 @@ class GeraldBot(commands.Bot):
     async def send_response(self, message):
         """Generate and send response."""
         try:
-            response = self.generate_response()
+            # Check if this should be a random rant
+            current_time = datetime.now().timestamp()
+            if current_time - self.last_rant_time <= 1:  # Just triggered rant
+                response = self.get_random_rant_topic()
+            else:
+                response = self.generate_response()
+                
             if response:
                 await message.channel.send(response)
                 
@@ -230,6 +368,34 @@ async def teach_word(ctx, *, words):
     ctx.bot.learn_from_message(words)
     await ctx.send(f"Gerald learned from: {words}")
 
+@commands.command(name='memory')
+async def show_memory(ctx):
+    """Show Gerald's conversation memory stats."""
+    total_convos = len(ctx.bot.all_conversations)
+    users_remembered = len(ctx.bot.user_personalities)
+    recent_convos = ctx.bot.all_conversations[-5:] if ctx.bot.all_conversations else []
+    
+    memory_info = f"Gerald remembers {total_convos} conversations from {users_remembered} people.\n"
+    if recent_convos:
+        memory_info += "Recent memories:\n"
+        for convo in recent_convos:
+            memory_info += f"- {convo['author']}: {convo['content'][:50]}...\n"
+    
+    await ctx.send(memory_info)
+
+@commands.command(name='rant')
+async def force_rant(ctx):
+    """Make Gerald rant about something random."""
+    rant = ctx.bot.get_random_rant_topic()
+    await ctx.send(f"Random rant: {rant}")
+
+@commands.command(name='save')
+async def save_memory(ctx):
+    """Manually save Gerald's memory (admin only)."""
+    ctx.bot.save_conversations()
+    ctx.bot.save_learned_words()
+    await ctx.send("Gerald's memory saved!")
+
 # Run the bot
 async def main():
     """Main function to run the bot."""
@@ -246,6 +412,9 @@ async def main():
     bot.add_command(show_vocabulary)
     bot.add_command(test_response)
     bot.add_command(teach_word)
+    bot.add_command(show_memory)
+    bot.add_command(force_rant)
+    bot.add_command(save_memory)
     
     try:
         await bot.start(token)
