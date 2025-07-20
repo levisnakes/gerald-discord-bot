@@ -1,0 +1,88 @@
+{
+  "friend_name": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+  "model_type": "rule_based",
+  "version": "1.0",
+  "personality": {
+    "message_count": 15,
+    "avg_message_length": 25.4,
+    "common_words": [
+      "this",
+      "what",
+      "yeah",
+      "about",
+      "think",
+      "hey",
+      "lol",
+      "hilarious",
+      "totally",
+      "agree",
+      "hmm",
+      "interesting",
+      "point",
+      "reminds",
+      "one",
+      "time",
+      "wait",
+      "really"
+    ],
+    "emoji_usage": 0.2,
+    "exclamation_usage": 0.3333333333333333,
+    "question_usage": 0.26666666666666666,
+    "sentiment": "neutral"
+  },
+  "common_responses": [],
+  "response_patterns": {
+    "agreement": [
+      "Yeah!",
+      "Totally!",
+      "I agree!",
+      "Exactly!",
+      "For sure!"
+    ],
+    "excitement": [
+      "That's awesome!",
+      "So cool!",
+      "Amazing!",
+      "Wow!",
+      "That's great!"
+    ],
+    "questioning": [
+      "Really?",
+      "Wait, what?",
+      "How so?",
+      "Interesting...",
+      "Tell me more!"
+    ],
+    "casual": [
+      "lol",
+      "haha",
+      "nice",
+      "cool",
+      "sweet"
+    ],
+    "thinking": [
+      "Hmm...",
+      "I think...",
+      "Maybe...",
+      "Probably...",
+      "Not sure..."
+    ]
+  },
+  "emoji_preferences": [
+    "😂",
+    "😊",
+    "🎉",
+    "👍",
+    "❤️",
+    "🤔",
+    "😎",
+    "🔥"
+  ],
+  "fallback_responses": [
+    "That's interesting!",
+    "Tell me more about that",
+    "I see what you mean",
+    "That makes sense",
+    "Hmm, interesting point"
+  ]
+}

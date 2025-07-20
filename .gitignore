@@ -1,0 +1,38 @@
+# Environment variables
+.env
+*.env
+
+# Bot logs
+*.log
+bot.log
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Gerald's learned vocabulary (optional - keep local)
+gerald_vocabulary.json
+
+# Configuration files with sensitive data
+config.json
+
+# Temporary files
+temp_name.txt
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Data files (optional - you may want to include some)
+data/messages.json
+data/baconator_messages.json
+
+# Model files
+models/*.bin
+models/*.pkl

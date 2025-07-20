@@ -1,0 +1,123 @@
+{
+  "friend_name": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+  "message_count": 15,
+  "training_samples": [
+    "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Hey! What's up?\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: lol that's hilarious 😂",
+    "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Hey! What's up?\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: lol that's hilarious 😂\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: I totally agree with that",
+    "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Hey! What's up?\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: lol that's hilarious 😂\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: I totally agree with that\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Hmm, interesting point",
+    "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Hey! What's up?\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: lol that's hilarious 😂\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: I totally agree with that\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Hmm, interesting point\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: That reminds me of this one time...",
+    "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Hey! What's up?\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: lol that's hilarious 😂\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: I totally agree with that\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Hmm, interesting point\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: That reminds me of this one time...\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Wait, really? That's crazy!",
+    "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: lol that's hilarious 😂\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: I totally agree with that\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Hmm, interesting point\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: That reminds me of this one time...\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Wait, really? That's crazy!\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: I love that idea!",
+    "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: I totally agree with that\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Hmm, interesting point\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: That reminds me of this one time...\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Wait, really? That's crazy!\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: I love that idea!\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Yeah, I've been thinking about that too",
+    "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Hmm, interesting point\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: That reminds me of this one time...\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Wait, really? That's crazy!\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: I love that idea!\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Yeah, I've been thinking about that too\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Oh wow, I didn't know that",
+    "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: That reminds me of this one time...\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Wait, really? That's crazy!\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: I love that idea!\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Yeah, I've been thinking about that too\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Oh wow, I didn't know that\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: That's so cool! 🎉",
+    "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: I love that idea!\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Yeah, I've been thinking about that too\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Oh wow, I didn't know that\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: That's so cool! 🎉\nSomeoneElse: What do you think about this?\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: I think it's pretty awesome actually",
+    "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Oh wow, I didn't know that\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: That's so cool! 🎉\nSomeoneElse: What do you think about this?\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: I think it's pretty awesome actually\nSomeoneElse: Should we do this?\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Yeah definitely! Let's do it",
+    "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: That's so cool! 🎉\nSomeoneElse: What do you think about this?\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: I think it's pretty awesome actually\nSomeoneElse: Should we do this?\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: Yeah definitely! Let's do it\necho \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py: This is going to be fun 😊"
+  ],
+  "personality_traits": {
+    "message_count": 15,
+    "avg_message_length": 25.4,
+    "common_words": [
+      "this",
+      "what",
+      "yeah",
+      "about",
+      "think",
+      "hey",
+      "lol",
+      "hilarious",
+      "totally",
+      "agree",
+      "hmm",
+      "interesting",
+      "point",
+      "reminds",
+      "one",
+      "time",
+      "wait",
+      "really"
+    ],
+    "emoji_usage": 0.2,
+    "exclamation_usage": 0.3333333333333333,
+    "question_usage": 0.26666666666666666,
+    "sentiment": "neutral"
+  },
+  "messages": [
+    {
+      "author": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+      "content": "Hey! What's up?",
+      "timestamp": "2024-01-01T10:00:00"
+    },
+    {
+      "author": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+      "content": "lol that's hilarious 😂",
+      "timestamp": "2024-01-01T10:05:00"
+    },
+    {
+      "author": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+      "content": "I totally agree with that",
+      "timestamp": "2024-01-01T10:10:00"
+    },
+    {
+      "author": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+      "content": "Hmm, interesting point",
+      "timestamp": "2024-01-01T10:15:00"
+    },
+    {
+      "author": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+      "content": "That reminds me of this one time...",
+      "timestamp": "2024-01-01T10:20:00"
+    },
+    {
+      "author": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+      "content": "Wait, really? That's crazy!",
+      "timestamp": "2024-01-01T10:25:00"
+    },
+    {
+      "author": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+      "content": "I love that idea!",
+      "timestamp": "2024-01-01T10:30:00"
+    },
+    {
+      "author": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+      "content": "Yeah, I've been thinking about that too",
+      "timestamp": "2024-01-01T10:35:00"
+    },
+    {
+      "author": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+      "content": "Oh wow, I didn't know that",
+      "timestamp": "2024-01-01T10:40:00"
+    },
+    {
+      "author": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+      "content": "That's so cool! 🎉",
+      "timestamp": "2024-01-01T10:45:00"
+    },
+    {
+      "author": "SomeoneElse",
+      "content": "What do you think about this?",
+      "timestamp": "2024-01-01T10:46:00"
+    },
+    {
+      "author": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+      "content": "I think it's pretty awesome actually",
+      "timestamp": "2024-01-01T10:47:00"
+    },
+    {
+      "author": "SomeoneElse",
+      "content": "Should we do this?",
+      "timestamp": "2024-01-01T10:48:00"
+    },
+    {
+      "author": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+      "content": "Yeah definitely! Let's do it",
+      "timestamp": "2024-01-01T10:49:00"
+    },
+    {
+      "author": "echo \"TestFriend\" | C:/Users/levis/AppData/Local/Microsoft/WindowsApps/python3.11.exe scripts/prepare_data.py",
+      "content": "This is going to be fun 😊",
+      "timestamp": "2024-01-01T10:50:00"
+    }
+  ]
+}

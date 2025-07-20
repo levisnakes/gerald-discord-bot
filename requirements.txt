@@ -1,0 +1,38 @@
+# Discord Friend AI Bot Dependencies
+
+# Discord Bot Framework
+discord.py>=2.3.2
+
+# HTTP Client for Ollama API
+aiohttp>=3.8.0
+
+# AI/ML Libraries (Free - Optional for fallback)
+torch>=2.0.0
+transformers>=4.30.0
+datasets>=2.12.0
+tokenizers>=0.13.0
+
+# Text Processing
+nltk>=3.8
+spacy>=3.6.0
+
+# Data Handling
+pandas>=2.0.0
+numpy>=1.24.0
+requests>=2.31.0
+
+# Environment Management
+python-dotenv>=1.0.0
+
+# Utilities
+tqdm>=4.65.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Optional: For better performance
+# accelerate>=0.20.0  # Faster training
+# optimum>=1.8.0      # Model optimization
+
+# Development Tools
+black>=23.0.0
+pytest>=7.3.0
