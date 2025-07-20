@@ -12,6 +12,10 @@ import logging
 import json
 import random
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Simple logging for cloud
 logging.basicConfig(level=logging.INFO)
@@ -126,23 +130,25 @@ class GeraldBot(commands.Bot):
     def get_random_rant_topic(self):
         """Generate a random rant about something from memory."""
         topics = [
-            "tyler being massive",
-            "games being rubbish these days", 
-            "everyone always eating",
-            "people moaning about being tired",
-            "proper mental weather innit",
-            "cant be arsed with anything today",
-            "why everything so expensive now",
-            "gaming all night then moaning",
-            "tyler probably eating again",
-            "bloody hell this is boring"
+            "gaming is pretty cool these days",
+            "weather is proper mental innit", 
+            "everyone loves good food",
+            "tired but gaming sounds good",
+            "proper nice when everyone chats",
+            "gaming with the lads is epic",
+            "why everything so expensive though",
+            "love a good game session",
+            "tyler probably gaming again",
+            "nice to chat with you lot"
         ]
         
-        # Use learned words to make it more authentic
-        if 'gaming' in self.learned_words and 'rubbish' in self.learned_words:
-            topics.append("gaming is proper rubbish mate")
-        if 'tyler' in self.learned_words and 'massive' in self.learned_words:
-            topics.append("tyler is getting more massive")
+        # Use learned words to make it more authentic but positive
+        if 'gaming' in self.learned_words and 'good' in self.learned_words:
+            topics.append("gaming is good mate")
+        if 'nice' in self.learned_words and 'chat' in self.learned_words:
+            topics.append("nice to chat innit")
+        if 'epic' in self.learned_words and 'games' in self.learned_words:
+            topics.append("games are epic")
             
         return random.choice(topics)
     
@@ -156,15 +162,17 @@ class GeraldBot(commands.Bot):
         except FileNotFoundError:
             # Start with friend group vocabulary
             self.learned_words = {
-                # British basics
-                'mate', 'innit', 'bloody', 'hell', 'proper', 'mental', 'rubbish',
-                'cant', 'be', 'arsed', 'whatever', 'dont', 'care', 'you', 'lot',
+                # British basics (more positive)
+                'mate', 'innit', 'proper', 'nice', 'good', 'cool', 'yeah',
+                'thanks', 'cheers', 'brilliant', 'lovely', 'sound', 'right',
                 # Friend group stuff
-                'tyler', 'jackson', 'massive', 'heavy', 'pounds', 'weight', 'fat', 'huge',
-                'gaming', 'games', 'play', 'playing', 'tired', 'boring', 'food', 'eating',
-                'what', 'how', 'why', 'when', 'where', 'good', 'bad', 'nice', 'lads', 'guys',
-                # Gaming vocabulary  
-                'lag', 'fps', 'noob', 'epic', 'gg', 'rip', 'op', 'sus', 'cringe'
+                'tyler', 'jackson', 'lads', 'guys', 'chat', 'talking', 'friends',
+                'gaming', 'games', 'play', 'playing', 'fun', 'epic', 'awesome',
+                'what', 'how', 'why', 'when', 'where', 'good', 'bad', 'nice',
+                # Gaming vocabulary (positive)  
+                'fps', 'noob', 'epic', 'gg', 'win', 'victory', 'skill', 'pro',
+                # Conversation words
+                'hello', 'hey', 'sup', 'wassup', 'cool', 'sweet', 'nice'
             }
             self.word_frequency = {}
         print(f"Gerald starts with {len(self.learned_words)} words")
@@ -207,10 +215,12 @@ class GeraldBot(commands.Bot):
         common_words = sorted(self.word_frequency.items(), key=lambda x: x[1], reverse=True)
         
         # Split words into categories from learned vocabulary only
-        connectors = [w for w in ['mate', 'innit', 'bloody', 'proper', 'hell', 'yeah', 'oh'] if w in self.learned_words]
+        connectors = [w for w in ['mate', 'innit', 'yeah', 'oh', 'hey', 'nice', 'good'] if w in self.learned_words]
         tyler_words = [w for w in ['tyler', 'massive', 'heavy', 'pounds', 'weight', 'fat', 'huge', 'big'] if w in self.learned_words]
-        reactions = [w for w in ['whatever', 'mental', 'rubbish', 'cant', 'arsed', 'care', 'dont', 'cool', 'thanks'] if w in self.learned_words]
-        descriptors = [w for w in ['real', 'proper', 'bloody', 'mental', 'massive', 'good', 'bad', 'nice'] if w in self.learned_words]
+        positive_reactions = [w for w in ['cool', 'nice', 'good', 'yeah', 'proper', 'epic'] if w in self.learned_words]
+        neutral_reactions = [w for w in ['whatever', 'mental', 'cant', 'care', 'dont', 'thanks'] if w in self.learned_words]
+        gaming_words = [w for w in ['gaming', 'games', 'play', 'fps', 'gg', 'epic'] if w in self.learned_words]
+        descriptors = [w for w in ['real', 'proper', 'mental', 'good', 'bad', 'nice', 'cool'] if w in self.learned_words]
         
         # Analyze context to make better responses
         context_lower = context.lower() if context else ""
@@ -218,55 +228,71 @@ class GeraldBot(commands.Bot):
         # Build response using ONLY learned words but with better logic
         response_words = []
         
-        # Context-aware responses
-        if 'thanks' in context_lower and 'thanks' in self.learned_words:
-            response_words = ['yeah', 'whatever'] if all(w in self.learned_words for w in ['yeah', 'whatever']) else ['mate']
-        elif 'cool' in context_lower and any(w in self.learned_words for w in ['yeah', 'proper', 'nice']):
+        # Context-aware responses (more friendly)
+        if 'thanks' in context_lower:
             if 'yeah' in self.learned_words:
-                response_words = ['yeah']
+                response_words = ['yeah', 'mate'] if 'mate' in self.learned_words else ['yeah']
+        elif 'cool' in context_lower or 'nice' in context_lower:
+            if positive_reactions:
+                response_words = [random.choice(positive_reactions)]
+                if len(response_words) < 2 and 'mate' in self.learned_words:
+                    response_words.append('mate')
+        elif any(game_word in context_lower for game_word in ['game', 'gaming', 'play']) and gaming_words:
+            response_words = [random.choice(gaming_words)]
+            if descriptors and len(response_words) < 2:
+                response_words.append(random.choice(descriptors))
+        elif '?' in context_lower:  # Questions get helpful responses
+            if connectors:
+                response_words = [random.choice(connectors)]
             if len(response_words) < 2 and descriptors:
                 response_words.append(random.choice(descriptors))
-        elif 'memory' in context_lower and reactions:
-            response_words.append(random.choice(reactions))
         else:
-            # Default response building
-            # Start with a connector
+            # Default response building (much more friendly)
+            # Start with a friendly connector
             if connectors:
                 response_words.append(random.choice(connectors))
             
-            # Add Tyler reference (lower chance for better variety)
-            if tyler_words and random.random() < 0.3:  # Reduced from 70% to 30%
+            # RARELY mention Tyler (only 5% chance instead of 30%)
+            if tyler_words and random.random() < 0.05:  # Drastically reduced Tyler references
                 response_words.append(random.choice(tyler_words))
             
-            # Add reaction word
-            if reactions and len(response_words) < 3:
-                response_words.append(random.choice(reactions))
+            # Add positive or neutral reaction
+            all_reactions = positive_reactions + neutral_reactions
+            if all_reactions and len(response_words) < 3:
+                response_words.append(random.choice(all_reactions))
         
         # Fill with most common words if response is too short
         if len(response_words) < 2:
-            available_words = [word for word, freq in common_words[:30] 
-                             if word in self.learned_words and word not in response_words and len(word) > 2]
-            if available_words:
-                response_words.extend(random.sample(available_words, 
-                                                  min(2, len(available_words))))
+            # Prefer positive and neutral words
+            preferred_words = [word for word, freq in common_words[:30] 
+                             if word in self.learned_words 
+                             and word not in response_words 
+                             and len(word) > 2
+                             and word not in ['fat', 'massive', 'heavy', 'pounds', 'weight']]  # Avoid Tyler words
+            
+            if preferred_words:
+                response_words.extend(random.sample(preferred_words, 
+                                                  min(2, len(preferred_words))))
         
-        # Ensure we have something
+        # Ensure we have something friendly
         if not response_words:
-            if 'mate' in self.learned_words:
+            if 'yeah' in self.learned_words:
+                response_words = ['yeah']
+            elif 'mate' in self.learned_words:
                 response_words = ['mate']
             elif self.learned_words:
-                response_words = [random.choice(list(self.learned_words))]
+                # Pick any word except Tyler-related ones
+                safe_words = [w for w in self.learned_words if w not in ['fat', 'massive', 'heavy', 'pounds', 'weight', 'tyler']]
+                if safe_words:
+                    response_words = [random.choice(safe_words)]
+                else:
+                    response_words = [random.choice(list(self.learned_words))]
         
-        # Keep it short but not too short (2-4 words for better conversation)
-        response_words = response_words[:4]
-        if len(response_words) == 1 and len(self.learned_words) > 10:
-            # Add one more word if we have vocabulary
-            extra_words = [w for w in self.learned_words if w not in response_words and len(w) > 2]
-            if extra_words:
-                response_words.append(random.choice(extra_words))
+        # Keep it conversational (2-3 words usually)
+        response_words = response_words[:3]
         
-        result = ' '.join(response_words) if response_words else "mate"
-        print(f"Generated contextual response: {result}")
+        result = ' '.join(response_words) if response_words else "yeah mate"
+        print(f"Generated friendly response: {result}")
         return result
     
     async def on_ready(self):
@@ -433,11 +459,13 @@ async def save_memory(ctx):
 # Run the bot
 async def main():
     """Main function to run the bot."""
-    # Get Discord token from environment variable
-    token = os.environ.get('DISCORD_TOKEN')
+    # Get Discord token from environment variable (works for both local .env and cloud)
+    token = os.environ.get('DISCORD_TOKEN') or os.getenv('DISCORD_TOKEN')
     
     if not token:
-        print("ERROR: DISCORD_TOKEN environment variable not set!")
+        print("ERROR: DISCORD_TOKEN not found!")
+        print("For local: Add DISCORD_TOKEN to your .env file")
+        print("For cloud: Set DISCORD_TOKEN environment variable")
         return
     
     bot = GeraldBot()
