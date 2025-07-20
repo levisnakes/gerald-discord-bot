@@ -210,89 +210,97 @@ class GeraldBot(commands.Bot):
             self.save_learned_words()  # Save immediately
     
     def generate_response(self, context=""):
-        """Generate a response using only learned words with better context awareness."""
+        """Generate a response using only learned words with proper context understanding."""
         # Get most common words (more likely to be used)
         common_words = sorted(self.word_frequency.items(), key=lambda x: x[1], reverse=True)
         
         # Split words into categories from learned vocabulary only
-        connectors = [w for w in ['mate', 'innit', 'yeah', 'oh', 'hey', 'nice', 'good'] if w in self.learned_words]
-        tyler_words = [w for w in ['tyler', 'massive', 'heavy', 'pounds', 'weight', 'fat', 'huge', 'big'] if w in self.learned_words]
-        positive_reactions = [w for w in ['cool', 'nice', 'good', 'yeah', 'proper', 'epic'] if w in self.learned_words]
-        neutral_reactions = [w for w in ['whatever', 'mental', 'cant', 'care', 'dont', 'thanks'] if w in self.learned_words]
+        connectors = [w for w in ['mate', 'yeah', 'oh', 'hey', 'nice', 'good'] if w in self.learned_words]
+        positive_reactions = [w for w in ['cool', 'nice', 'good', 'yeah', 'proper', 'epic', 'awesome'] if w in self.learned_words]
+        neutral_reactions = [w for w in ['whatever', 'alright', 'okay', 'sure'] if w in self.learned_words]
         gaming_words = [w for w in ['gaming', 'games', 'play', 'fps', 'gg', 'epic'] if w in self.learned_words]
-        descriptors = [w for w in ['real', 'proper', 'mental', 'good', 'bad', 'nice', 'cool'] if w in self.learned_words]
         
-        # Analyze context to make better responses
+        # Analyze context to make MUCH better responses
         context_lower = context.lower() if context else ""
-        
-        # Build response using ONLY learned words but with better logic
         response_words = []
         
-        # Context-aware responses (more friendly)
-        if 'thanks' in context_lower:
+        # MUCH MORE SPECIFIC context responses
+        if 'are you nice now' in context_lower:
+            # Direct question about being nice
             if 'yeah' in self.learned_words:
-                response_words = ['yeah', 'mate'] if 'mate' in self.learned_words else ['yeah']
-        elif 'cool' in context_lower or 'nice' in context_lower:
+                response_words = ['yeah']
+                if 'mate' in self.learned_words:
+                    response_words.append('mate')
+        
+        elif 'really' in context_lower:
+            # Responding to "really"
+            if 'yeah' in self.learned_words:
+                response_words = ['yeah']
+            elif positive_reactions:
+                response_words = [random.choice(positive_reactions)]
+        
+        elif 'whats cool' in context_lower or "what's cool" in context_lower:
+            # Question about what's cool
+            if gaming_words:
+                response_words = [random.choice(gaming_words)]
+            elif 'everything' in self.learned_words:
+                response_words = ['everything']
+            elif positive_reactions:
+                response_words = [random.choice(positive_reactions)]
+        
+        elif 'thanks' in context_lower:
+            # Responding to thanks
+            if 'yeah' in self.learned_words and 'mate' in self.learned_words:
+                response_words = ['yeah', 'mate']
+            elif 'welcome' in self.learned_words:
+                response_words = ['welcome']
+            elif 'yeah' in self.learned_words:
+                response_words = ['yeah']
+        
+        elif 'cool' in context_lower and not 'whats' in context_lower:
+            # Agreeing with something being cool
             if positive_reactions:
                 response_words = [random.choice(positive_reactions)]
-                if len(response_words) < 2 and 'mate' in self.learned_words:
+                if 'mate' in self.learned_words and len(response_words) < 2:
                     response_words.append('mate')
-        elif any(game_word in context_lower for game_word in ['game', 'gaming', 'play']) and gaming_words:
-            response_words = [random.choice(gaming_words)]
-            if descriptors and len(response_words) < 2:
-                response_words.append(random.choice(descriptors))
-        elif '?' in context_lower:  # Questions get helpful responses
-            if connectors:
+        
+        elif '?' in context_lower:
+            # General questions - give helpful responses
+            if 'dunno' in self.learned_words:
+                response_words = ['dunno']
+            elif 'maybe' in self.learned_words:
+                response_words = ['maybe']
+            elif connectors:
                 response_words = [random.choice(connectors)]
-            if len(response_words) < 2 and descriptors:
-                response_words.append(random.choice(descriptors))
+        
         else:
-            # Default response building (much more friendly)
-            # Start with a friendly connector
+            # Default friendly response - keep it simple
             if connectors:
                 response_words.append(random.choice(connectors))
             
-            # RARELY mention Tyler (only 5% chance instead of 30%)
-            if tyler_words and random.random() < 0.05:  # Drastically reduced Tyler references
-                response_words.append(random.choice(tyler_words))
-            
-            # Add positive or neutral reaction
-            all_reactions = positive_reactions + neutral_reactions
-            if all_reactions and len(response_words) < 3:
-                response_words.append(random.choice(all_reactions))
+            # Only add a second word if it makes sense
+            if len(response_words) == 1 and positive_reactions and random.random() < 0.3:
+                response_words.append(random.choice(positive_reactions))
         
-        # Fill with most common words if response is too short
-        if len(response_words) < 2:
-            # Prefer positive and neutral words
-            preferred_words = [word for word, freq in common_words[:30] 
-                             if word in self.learned_words 
-                             and word not in response_words 
-                             and len(word) > 2
-                             and word not in ['fat', 'massive', 'heavy', 'pounds', 'weight']]  # Avoid Tyler words
-            
-            if preferred_words:
-                response_words.extend(random.sample(preferred_words, 
-                                                  min(2, len(preferred_words))))
-        
-        # Ensure we have something friendly
+        # If we still don't have a response, use fallback
         if not response_words:
             if 'yeah' in self.learned_words:
                 response_words = ['yeah']
             elif 'mate' in self.learned_words:
                 response_words = ['mate']
-            elif self.learned_words:
-                # Pick any word except Tyler-related ones
-                safe_words = [w for w in self.learned_words if w not in ['fat', 'massive', 'heavy', 'pounds', 'weight', 'tyler']]
+            else:
+                # Last resort - pick a safe word
+                safe_words = [w for w in self.learned_words if w in ['nice', 'good', 'cool', 'hey']]
                 if safe_words:
                     response_words = [random.choice(safe_words)]
                 else:
-                    response_words = [random.choice(list(self.learned_words))]
+                    response_words = ['yeah']
         
-        # Keep it conversational (2-3 words usually)
-        response_words = response_words[:3]
+        # Keep responses SHORT and contextual (1-2 words max)
+        response_words = response_words[:2]
         
-        result = ' '.join(response_words) if response_words else "yeah mate"
-        print(f"Generated friendly response: {result}")
+        result = ' '.join(response_words) if response_words else "yeah"
+        print(f"Context: '{context}' -> Response: '{result}'")
         return result
     
     async def on_ready(self):
@@ -342,7 +350,7 @@ class GeraldBot(commands.Bot):
             await self.send_response(message)
     
     async def should_respond(self, message):
-        """Determine if bot should respond to a message."""
+        """Determine if bot should respond to a message with better context awareness."""
         # Check cooldown to prevent spam
         channel_id = message.channel.id
         current_time = datetime.now().timestamp()
@@ -356,8 +364,21 @@ class GeraldBot(commands.Bot):
         if self.user in message.mentions:
             return True
         
-        # Check for trigger words
         content_lower = message.content.lower()
+        
+        # ALWAYS respond to direct questions or statements to Gerald
+        if any(phrase in content_lower for phrase in ['are you', 'whats', "what's", 'how are', 'gerald']):
+            return True
+        
+        # ALWAYS respond to greetings
+        if any(greeting in content_lower for greeting in ['hey', 'hello', 'hi gerald', 'sup gerald']):
+            return True
+        
+        # Respond to thanks
+        if 'thanks' in content_lower or 'cheers' in content_lower:
+            return True
+        
+        # Check for trigger words with higher chance
         for trigger in self.config["trigger_words"]:
             if trigger.lower() in content_lower:
                 return True
@@ -365,36 +386,25 @@ class GeraldBot(commands.Bot):
         # Respond to friend names being mentioned
         for friend in self.config["friend_names"]:
             if friend in content_lower:
-                return random.random() < 0.6  # 60% chance
+                return random.random() < 0.5  # 50% chance
         
-        # Random rants (every 5+ minutes)
-        if current_time - self.last_rant_time > self.rant_cooldown:
-            if random.random() < 0.1:  # 10% chance for random rant
-                self.last_rant_time = current_time
-                return True
+        # Much higher chance for questions
+        if '?' in message.content and len(message.content) > 3:
+            return random.random() < 0.9  # 90% chance for questions
         
-        # Respond to questions more often
-        if '?' in message.content and len(message.content) > 5:
-            return random.random() < 0.8
-        
-        # Gaming talk gets more responses
-        gaming_words = ['game', 'gaming', 'play', 'fps', 'lag', 'gg']
+        # Gaming talk gets responses
+        gaming_words = ['game', 'gaming', 'play', 'fps']
         if any(word in content_lower for word in gaming_words):
-            return random.random() < 0.7
+            return random.random() < 0.6
         
-        # Random response chance for any message
-        return random.random() < self.config["response_chance"]
+        # Lower random response chance for other messages
+        return random.random() < 0.2  # Reduced from 0.4
     
     async def send_response(self, message):
-        """Generate and send response."""
+        """Generate and send response with proper context."""
         try:
-            # Check if this should be a random rant
-            current_time = datetime.now().timestamp()
-            if current_time - self.last_rant_time <= 1:  # Just triggered rant
-                response = self.get_random_rant_topic()
-            else:
-                # Pass the message content as context for better responses
-                response = self.generate_response(context=message.content)
+            # Pass the message content as context for better responses
+            response = self.generate_response(context=message.content)
                 
             if response:
                 await message.channel.send(response)
