@@ -202,51 +202,71 @@ class GeraldBot(commands.Bot):
             self.save_learned_words()  # Save immediately
     
     def generate_response(self, context=""):
-        """Generate a response using only learned words."""
+        """Generate a response using only learned words with better context awareness."""
         # Get most common words (more likely to be used)
         common_words = sorted(self.word_frequency.items(), key=lambda x: x[1], reverse=True)
         
         # Split words into categories from learned vocabulary only
-        connectors = [w for w in ['mate', 'innit', 'bloody', 'proper', 'hell'] if w in self.learned_words]
+        connectors = [w for w in ['mate', 'innit', 'bloody', 'proper', 'hell', 'yeah', 'oh'] if w in self.learned_words]
         tyler_words = [w for w in ['tyler', 'massive', 'heavy', 'pounds', 'weight', 'fat', 'huge', 'big'] if w in self.learned_words]
-        reactions = [w for w in ['whatever', 'mental', 'rubbish', 'cant', 'arsed', 'care', 'dont'] if w in self.learned_words]
+        reactions = [w for w in ['whatever', 'mental', 'rubbish', 'cant', 'arsed', 'care', 'dont', 'cool', 'thanks'] if w in self.learned_words]
+        descriptors = [w for w in ['real', 'proper', 'bloody', 'mental', 'massive', 'good', 'bad', 'nice'] if w in self.learned_words]
         
-        # Build response using ONLY learned words
+        # Analyze context to make better responses
+        context_lower = context.lower() if context else ""
+        
+        # Build response using ONLY learned words but with better logic
         response_words = []
         
-        # Always start with a connector if available
-        if connectors:
-            response_words.append(random.choice(connectors))
-        
-        # Add Tyler reference (high priority)
-        if tyler_words and random.random() < 0.7:  # 70% chance
-            response_words.append(random.choice(tyler_words))
-        
-        # Add reaction word
-        if reactions and len(response_words) < 4:
+        # Context-aware responses
+        if 'thanks' in context_lower and 'thanks' in self.learned_words:
+            response_words = ['yeah', 'whatever'] if all(w in self.learned_words for w in ['yeah', 'whatever']) else ['mate']
+        elif 'cool' in context_lower and any(w in self.learned_words for w in ['yeah', 'proper', 'nice']):
+            if 'yeah' in self.learned_words:
+                response_words = ['yeah']
+            if len(response_words) < 2 and descriptors:
+                response_words.append(random.choice(descriptors))
+        elif 'memory' in context_lower and reactions:
             response_words.append(random.choice(reactions))
+        else:
+            # Default response building
+            # Start with a connector
+            if connectors:
+                response_words.append(random.choice(connectors))
+            
+            # Add Tyler reference (lower chance for better variety)
+            if tyler_words and random.random() < 0.3:  # Reduced from 70% to 30%
+                response_words.append(random.choice(tyler_words))
+            
+            # Add reaction word
+            if reactions and len(response_words) < 3:
+                response_words.append(random.choice(reactions))
         
-        # Fill with most common words if needed
-        if len(response_words) < 3:
-            available_words = [word for word, freq in common_words[:20] 
-                             if word in self.learned_words and word not in response_words]
+        # Fill with most common words if response is too short
+        if len(response_words) < 2:
+            available_words = [word for word, freq in common_words[:30] 
+                             if word in self.learned_words and word not in response_words and len(word) > 2]
             if available_words:
                 response_words.extend(random.sample(available_words, 
                                                   min(2, len(available_words))))
         
         # Ensure we have something
-        if not response_words and 'mate' in self.learned_words:
-            response_words = ['mate']
-        elif not response_words:
-            # Use any learned word as last resort
-            if self.learned_words:
+        if not response_words:
+            if 'mate' in self.learned_words:
+                response_words = ['mate']
+            elif self.learned_words:
                 response_words = [random.choice(list(self.learned_words))]
         
-        # Keep it short (max 5 words)
-        response_words = response_words[:5]
+        # Keep it short but not too short (2-4 words for better conversation)
+        response_words = response_words[:4]
+        if len(response_words) == 1 and len(self.learned_words) > 10:
+            # Add one more word if we have vocabulary
+            extra_words = [w for w in self.learned_words if w not in response_words and len(w) > 2]
+            if extra_words:
+                response_words.append(random.choice(extra_words))
         
         result = ' '.join(response_words) if response_words else "mate"
-        print(f"Generated response: {result}")
+        print(f"Generated contextual response: {result}")
         return result
     
     async def on_ready(self):
@@ -263,14 +283,27 @@ class GeraldBot(commands.Bot):
             )
         )
     
+    async def on_command_error(self, ctx, error):
+        """Handle command errors."""
+        if isinstance(error, commands.CommandNotFound):
+            return  # Ignore unknown commands
+        elif isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send("mate you forgot something")
+        else:
+            print(f"Command error: {error}")
+            await ctx.send("bloody hell something went wrong")
+    
     async def on_message(self, message):
         """Handle incoming messages."""
         # Ignore bot's own messages and other bots
         if message.author.bot:
             return
         
-        # Process commands first
-        await self.process_commands(message)
+        # Process commands FIRST before anything else
+        ctx = await self.get_context(message)
+        if ctx.valid:
+            await self.invoke(ctx)
+            return  # Don't do anything else if it's a command
         
         # Remember EVERY message permanently
         self.remember_message(message)
@@ -334,7 +367,8 @@ class GeraldBot(commands.Bot):
             if current_time - self.last_rant_time <= 1:  # Just triggered rant
                 response = self.get_random_rant_topic()
             else:
-                response = self.generate_response()
+                # Pass the message content as context for better responses
+                response = self.generate_response(context=message.content)
                 
             if response:
                 await message.channel.send(response)
